@@ -1,4 +1,4 @@
-setwd("/Users/kentayokote/Documents/Internship/WEHI/R/Image-Analysis-Pipeline")
+setwd("Image-Analysis-Pipeline")
 
 # Load the libraries
 library(SPIAT)
@@ -194,4 +194,3 @@ plot_cell_categories_CP(imputedPhenotype, phenotype_interest, colour_v)
 
 # Counting the phenotypes
 count <- count_cell_types(patient_name, imputedPhenotype, cellPhenotypes)
-

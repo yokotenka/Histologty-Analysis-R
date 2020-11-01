@@ -1,2 +1,2 @@
-# Image-Analysis-Pipeline
+# Histologty-Analysis-R
 For analysing mIHC tissue images

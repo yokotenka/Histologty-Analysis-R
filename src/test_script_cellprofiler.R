@@ -1,15 +1,18 @@
 setwd("/Users/kentayokote/Documents/Internship/WEHI/R/Image-Analysis-Pipeline")
 
-
+# Load the libraries
 library(SPIAT)
-source("format_csv_to_sce.R")
-source("predict_positive_marker.R")
-source("impute_phenotype.R")
-source("pseudo_colour_environment.R")
-source("tumour_deliminated_image.R")
+source("src/format_csv_to_sce.R")
+source("src/predict_positive_marker.R")
+source("src/impute_phenotype.R")
+source("src/plot_cell_types.R")
+source("src/count_cell_types.R")
 
-# Path to the csv.Z
-raw_data <- "Nuclei_CM_T18AH0205.csv"
+
+# Path to the csv.
+raw_data <- "res/Nuclei_CM_T18AH0205.csv"
+patient_name <- "CM_T18AH0205"
+
 
 ##Markers used in mIHC
 markers <- c("CCR7", 
@@ -180,29 +183,15 @@ negativeMarkers <- c(
     "CD45,CD3,CD8,CD4,FOXP3,CD45RA,CD45RO,CCR7,CD69,CD103,CD49A",
     "CCR7,CD103,CD3,CD4,CD45,CD45RO,CD45RA,CD49A,CD69,CD8,FOXP3,GRZB,Ki67,PANCK"
 )
+
 # Impute the cell phenotypes
 imputedPhenotype <- imputePhenotype(predicted$predicted_data, cellPhenotypes, positiveMarkers, negativeMarkers, markers)
 
-
+# Plotting the cell types
 phenotype_interest <- c("Immune_Cell", "Epithelial_Cell")
 colour_v <- c("blue", "red")
 plot_cell_categories_CP(imputedPhenotype, phenotype_interest, colour_v)
 
-
-
-# Make the Pseudo-Colour image
-# name <- "CM_T19MH0019"
-# tumour_threshold <- predicted$marker_thresholds$PANCK
-# 
-# pseudo <- pseudo_colour_environment(
-#     patient_name = name,
-#     "/Volumes/T7/Processed/test2/CM_T19MH0019/V_reg_CROPPED_CM_T19MH0019_C8R2_PANCK.tif",
-#     "/Volumes/T7/Processed/test2/CM_T19MH0019/NUCLEI_CROPPED_CM_T19MH0019_C8R3_HEMATOXYLIN.tif",
-#     conda_env=NULL
-# )
-# 
-# tumour_deliminated_image(pseudo_object = pseudo, 
-#                          predicted$marker_thresholds$PANCK,
-#                          "/Volumes/T7/Processed/test2/CM_T19MH0019/"
-#                          )
+# Counting the phenotypes
+count <- count_cell_types(patient_name, imputedPhenotype, cellPhenotypes)
 
